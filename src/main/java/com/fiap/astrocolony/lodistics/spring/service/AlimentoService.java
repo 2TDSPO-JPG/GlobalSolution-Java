@@ -1,0 +1,61 @@
+package com.fiap.astrocolony.lodistics.spring.service;
+
+import com.fiap.astrocolony.lodistics.spring.dto.AlimentosDto;
+import com.fiap.astrocolony.lodistics.spring.dto.mapper.AlimentoMapper;
+import com.fiap.astrocolony.lodistics.spring.entity.Alimento;
+import com.fiap.astrocolony.lodistics.spring.exception.exceptions.EntidadeNaoLocalizadaException;
+import com.fiap.astrocolony.lodistics.spring.exception.exceptions.RegraNegocioException;
+import com.fiap.astrocolony.lodistics.spring.repository.AlimentoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AlimentoService {
+
+    private final AlimentoRepository alimentoRepository;
+
+    public AlimentosDto salvar(Alimento alimento){
+        if (alimento.getMissao().isEmpty()) throw new RegraNegocioException("O alimento deve estar associado a uma missão!");
+        Alimento alimento1 = alimentoRepository.save(alimento);
+        return AlimentoMapper.toDto(alimento1);
+    }
+
+    public AlimentosDto buscarPorId(Long id){
+        Alimento alimento = alimentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Alimento não encontrado"));
+        return AlimentoMapper.toDto(alimento);
+    }
+
+    public AlimentosDto atualizar(Alimento alimento){
+        Alimento alimentoExistente = alimentoRepository.findById(alimento.getIdAlimento())
+                .orElseThrow(() -> new RuntimeException("Alimento não encontrado"));
+        alimentoExistente.setNmAlimento(alimento.getNmAlimento());
+        alimentoExistente.setPesoAlimento(alimento.getPesoAlimento());
+        alimentoExistente.setKcal(alimento.getKcal());
+        Alimento alimentoAtualizado = alimentoRepository.save(alimentoExistente);
+        return AlimentoMapper.toDto(alimentoAtualizado);
+    }
+
+    public String deletar(Long id){
+        Alimento alimento = alimentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Alimento não encontrado"));
+        alimentoRepository.delete(alimento);
+        return "Alimento deletado com sucesso!";
+    }
+
+    public Page<AlimentosDto> buscarAlimentosPorMissao(Long idMissao, Pageable pageable){
+        Page<Alimento> alimentos = alimentoRepository.findByMissao_IdMissao(idMissao, pageable);
+        if (alimentos.isEmpty()) throw new EntidadeNaoLocalizadaException("Nenhum alimento encontrado para a missão com id: " + idMissao);
+        return alimentos.map(AlimentoMapper::toDto);
+    }
+
+    public Page<AlimentosDto> buscarTodos(Pageable pageable){
+        Page<Alimento> alimentos = alimentoRepository.findAll(pageable);
+        if (alimentos.isEmpty()) throw new EntidadeNaoLocalizadaException("Nenhum alimento encontrado");
+        return alimentos.map(AlimentoMapper::toDto);
+    }
+
+}
