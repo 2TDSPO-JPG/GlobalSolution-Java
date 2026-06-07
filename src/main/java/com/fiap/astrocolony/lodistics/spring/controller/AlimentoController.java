@@ -1,6 +1,7 @@
 package com.fiap.astrocolony.lodistics.spring.controller;
 
 import com.fiap.astrocolony.lodistics.spring.dto.AlimentosDto;
+import com.fiap.astrocolony.lodistics.spring.dto.requests.AlimentoRequestDto;
 import com.fiap.astrocolony.lodistics.spring.entity.Alimento;
 import com.fiap.astrocolony.lodistics.spring.service.AlimentoService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class AlimentoController {
     }
 
     @PostMapping
-    public AlimentosDto criarAlimento(Alimento alimentos){
+    public AlimentosDto criarAlimento(@RequestBody AlimentoRequestDto alimentos){
         return alimentoService.salvar(alimentos);
     }
 
@@ -38,11 +39,6 @@ public class AlimentoController {
     @DeleteMapping("/deletar-")
     public String deletarAlimento(@RequestParam Long id) {
         return alimentoService.deletar(id);
-    }
-
-    @GetMapping("/buscar-por-missao-")
-    public Page<AlimentosDto> buscarAlimentosPorMissao(@RequestParam Long idMissao, Pageable pageable){
-        return alimentoService.buscarAlimentosPorMissao(idMissao, pageable);
     }
 
 }

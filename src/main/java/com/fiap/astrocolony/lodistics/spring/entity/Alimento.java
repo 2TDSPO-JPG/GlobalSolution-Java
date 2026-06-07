@@ -1,5 +1,6 @@
 package com.fiap.astrocolony.lodistics.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,7 +26,7 @@ public class Alimento {
 
     private Integer kcal;
     @ManyToMany(mappedBy = "alimentos")
-    @NotNull(message = "A missão é obrigatória")
+    @JsonIgnore
     private List<Missao> missao;
 
 }

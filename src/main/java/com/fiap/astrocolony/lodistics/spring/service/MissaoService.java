@@ -47,7 +47,6 @@ public class MissaoService {
         }
 
         List<Tripulante> tripulantesDaMissao = new ArrayList<>();
-
         for (Long idTripulante : dto.idsTripulantes()) {
 
             Tripulante tripulante = tripulanteRepository
@@ -67,7 +66,6 @@ public class MissaoService {
             }
 
             tripulante.setStatusTripulante(StatusTripulante.EM_MISSAO);
-
             tripulantesDaMissao.add(tripulante);
         }
 
@@ -80,7 +78,6 @@ public class MissaoService {
                 );
 
         diretorVoo.setStatusDiretor(StatusTripulante.EM_MISSAO);
-
         Missao missao = Missao.builder()
                 .nmMissao(dto.nmMissao())
                 .destino(dto.destino())
@@ -91,9 +88,7 @@ public class MissaoService {
                 .tripulantes(tripulantesDaMissao)
                 .statusMissao(dto.statusMissao())
                 .build();
-
         Missao missaoSalva = repository.save(missao);
-
         return MissaoMapper.toDto(missaoSalva);
     }
 

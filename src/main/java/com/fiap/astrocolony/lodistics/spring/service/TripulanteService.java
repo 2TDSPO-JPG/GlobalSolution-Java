@@ -7,10 +7,13 @@ import com.fiap.astrocolony.lodistics.spring.dto.requests.TripulanteAtualizar;
 import com.fiap.astrocolony.lodistics.spring.dto.requests.TripulanteRequestDto;
 import com.fiap.astrocolony.lodistics.spring.entity.Tripulante;
 import com.fiap.astrocolony.lodistics.spring.enuns.StatusTripulante;
+import com.fiap.astrocolony.lodistics.spring.exception.exceptions.EntidadeNaoLocalizadaException;
 import com.fiap.astrocolony.lodistics.spring.exception.exceptions.ErrorAutenticacaoException;
 import com.fiap.astrocolony.lodistics.spring.exception.exceptions.RegraNegocioException;
 import com.fiap.astrocolony.lodistics.spring.repository.TripulanteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -59,8 +62,13 @@ public class TripulanteService {
     public TripulanteDto login(LoginDto login){
         Optional<Tripulante> tripulante = tripulanteRepository.findTripulanteByPinAndSenha(login.getEmailOrPin(), login.getSenha());
         if(tripulante.isEmpty())throw new ErrorAutenticacaoException("Login ou senha inválidos");
-
         return TripulanteMapper.toDto(tripulante.get());
+    }
+
+    public Page<TripulanteDto> buscarTripulantePorStatus(String status, Pageable pageable){
+        Page<Tripulante> tripulante = tripulanteRepository.findByStatusTripulante(StatusTripulante.valueOf(status.toUpperCase()), pageable);
+        if (tripulante == null) throw new EntidadeNaoLocalizadaException("Não há tripulantes com o status: " + status);
+        return tripulante.map(TripulanteMapper::toDto);
     }
 
 }

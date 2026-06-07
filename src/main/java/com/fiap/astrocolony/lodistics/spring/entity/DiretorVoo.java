@@ -1,5 +1,6 @@
 package com.fiap.astrocolony.lodistics.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fiap.astrocolony.lodistics.spring.enuns.StatusTripulante;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +29,7 @@ public class DiretorVoo {
 
     @OneToOne
     @JoinColumn(name = "id_missao")
+    @JsonIgnore
     private Missao missao;
 
     @Enumerated(EnumType.STRING)

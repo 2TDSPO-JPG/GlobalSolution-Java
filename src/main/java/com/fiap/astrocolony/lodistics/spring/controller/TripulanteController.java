@@ -6,6 +6,8 @@ import com.fiap.astrocolony.lodistics.spring.dto.requests.TripulanteAtualizar;
 import com.fiap.astrocolony.lodistics.spring.dto.requests.TripulanteRequestDto;
 import com.fiap.astrocolony.lodistics.spring.service.TripulanteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -38,6 +40,11 @@ public class TripulanteController {
     @PostMapping("/login")
     public TripulanteDto login(@RequestBody LoginDto login){
         return service.login(login);
+    }
+
+    @GetMapping("/buscar-por-status/{status}")
+    public Page<TripulanteDto> buscarPorStatus(@PathVariable("status") String status, Pageable pageable) {
+        return service.buscarTripulantePorStatus(status, pageable);
     }
 
 }
