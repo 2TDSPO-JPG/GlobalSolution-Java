@@ -625,3 +625,5 @@ O projeto simula um cenário real de gerenciamento logístico para missões espa
 ## Link
 
 Link do video: https://youtu.be/LLzfU6it4hU
+
+Link da API: http://52.247.30.59:8080/swagger-ui/index.html
