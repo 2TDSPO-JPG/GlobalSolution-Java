@@ -25,7 +25,7 @@ public class HistoricoConsumoService {
 
 
     public HistoricoConsumo salvar(HistoricoConsulmoRequest historicoConsumo) {
-        if (historicoConsumo.idAlimento() == null || historicoConsumo.idTripulante() == null) {
+        if (historicoConsumo.idAlimento() == 0 || historicoConsumo.idTripulante() == 0) {
             throw new RegraNegocioException("Verifique os IDs informados!");
         }
         Optional<Alimento> alimento = alimentoRepository.findById(historicoConsumo.idAlimento());

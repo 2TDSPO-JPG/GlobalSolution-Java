@@ -6,10 +6,7 @@ import com.fiap.astrocolony.lodistics.spring.service.HistoricoConsumoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/historico-consumo")
@@ -19,7 +16,7 @@ public class HistoricoConsumoController {
     private final HistoricoConsumoService historicoConsumoService;
 
     @PostMapping
-    public HistoricoConsumo salvar(HistoricoConsulmoRequest historicoConsumo) {
+    public HistoricoConsumo salvar(@RequestBody HistoricoConsulmoRequest historicoConsumo) {
         return historicoConsumoService.salvar(historicoConsumo);
     }
 
