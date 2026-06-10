@@ -1,6 +1,7 @@
 package com.fiap.astrocolony.lodistics.spring.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,9 +25,18 @@ public class HistoricoConsumo {
 
     @ManyToOne
     @JoinColumn(name = "id_tripulante")
+    @NotNull(message = "Informe o tripulante que está consumindo o alimento")
     private Tripulante tripulante;
 
     @ManyToOne
     @JoinColumn(name = "id_alimento")
+    @NotNull(message = "Informe o alimento que está sendo consumido")
     private Alimento alimento;
+
+
+    @PrePersist
+    public void horaDoConsumo(){
+        this.dataHoraConsumo = LocalDateTime.now();
+    }
+
 }
